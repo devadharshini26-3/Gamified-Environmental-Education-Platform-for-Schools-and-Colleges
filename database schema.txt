@@ -1,0 +1,90 @@
+CREATE DATABASE Environmental_Education_Platform;
+
+USE Environmental_Education_Platform;
+
+
+-- Users Table
+CREATE TABLE Users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(255),
+    role VARCHAR(20),
+    points INT DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- Lessons Table
+CREATE TABLE Lessons (
+    lesson_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(100),
+    description TEXT,
+    content TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- Quiz Table
+CREATE TABLE Quiz (
+    quiz_id INT PRIMARY KEY AUTO_INCREMENT,
+    lesson_id INT,
+    question TEXT,
+    option_a VARCHAR(255),
+    option_b VARCHAR(255),
+    option_c VARCHAR(255),
+    option_d VARCHAR(255),
+    answer VARCHAR(255),
+    FOREIGN KEY (lesson_id) REFERENCES Lessons(lesson_id)
+);
+
+
+-- Challenges Table
+CREATE TABLE Challenges (
+    challenge_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(100),
+    description TEXT,
+    points INT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- Badge Table
+CREATE TABLE Badges (
+    badge_id INT PRIMARY KEY AUTO_INCREMENT,
+    badge_name VARCHAR(100),
+    description TEXT,
+    points_required INT
+);
+
+
+-- User Badge Table
+CREATE TABLE User_Badges (
+    user_badge_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    badge_id INT,
+    earned_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(user_id) REFERENCES Users(user_id),
+    FOREIGN KEY(badge_id) REFERENCES Badges(badge_id)
+);
+
+
+-- Activity Table
+CREATE TABLE Activities (
+    activity_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    activity_type VARCHAR(100),
+    points_earned INT,
+    activity_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(user_id) REFERENCES Users(user_id)
+);
+
+
+-- Leaderboard Table
+CREATE TABLE Leaderboard (
+    leaderboard_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    total_points INT,
+    rank_position INT,
+    FOREIGN KEY(user_id) REFERENCES Users(user_id)
+);
